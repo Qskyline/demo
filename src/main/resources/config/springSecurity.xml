@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans:beans xmlns="http://www.springframework.org/schema/security" 
+    xmlns:beans="http://www.springframework.org/schema/beans" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="
+    http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans-4.1.xsd 
+    http://www.springframework.org/schema/security 
+    http://www.springframework.org/schema/security/spring-security-4.2.xsd">
+    	
+    <http pattern="/" security="none" />
+    <http pattern="/resource/**" security="none" />
+    <http pattern="/security/auth" security="none" />
+    <http pattern="/security/register.do" security="none" />
+
+    <http pattern="/**" entry-point-ref="myAuthEntryPoint" authentication-manager-ref="myAuthenticationManager">
+		<access-denied-handler ref="myAccessDeniedHandler" /> <!-- handle permission deny when logged -->
+		
+        <custom-filter before="CONCURRENT_SESSION_FILTER" ref="myUserKickFilter" />
+        <custom-filter position="CONCURRENT_SESSION_FILTER" ref="myConcurrencyFilter" />
+        <custom-filter position="LOGOUT_FILTER" ref="myLogoutFilter" />
+        <custom-filter position="FORM_LOGIN_FILTER" ref="myAuthenticationFilter" />
+        <custom-filter position="REMEMBER_ME_FILTER" ref="myRememberMeFilter" />
+		
+        <session-management session-authentication-strategy-ref="mySessionAuthenticationStrategy" />
+        
+        <intercept-url pattern="/security/login.do" access="permitAll" />
+        <intercept-url pattern="/**" access="hasRole('USER')" />
+        
+        <csrf disabled="true"/>
+    </http>
+    
+    <beans:bean id="myUserKickFilter" class="com.skyline.springsecurity.ajax.config.MyUserKickFilter" >
+		<beans:constructor-arg index="0">
+			<beans:array>
+				<beans:bean class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler" />
+				<beans:ref bean="myRememberMeService"/>
+			</beans:array>
+		</beans:constructor-arg>
+		<beans:constructor-arg index="1" ref="mySessionRegistryImpl"/>
+	</beans:bean>
+	
+	<beans:bean id="myConcurrencyFilter" class="org.springframework.security.web.session.ConcurrentSessionFilter">
+		<beans:constructor-arg index="0" ref="mySessionRegistryImpl"/>
+		<beans:constructor-arg index="1" value="/session-expired.htm"/>
+		<beans:property name="redirectStrategy" ref="myRedirectStrategy" />
+	</beans:bean>
+    
+    <beans:bean id="myLogoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
+		<beans:property name="filterProcessesUrl" value="/security/logout.do" />
+		<beans:constructor-arg index="0" ref="myLogoutSuccessHandler"/>
+		<beans:constructor-arg index="1">
+			<beans:array>
+				<beans:bean class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler" />
+				<beans:ref bean="myRememberMeService"/>
+			</beans:array>
+		</beans:constructor-arg>
+	</beans:bean>
+    
+    <beans:bean id="myAuthenticationFilter" class="com.skyline.springsecurity.ajax.config.MyAuthenticationFilter">
+        <beans:property name="authenticationManager" ref="myAuthenticationManager" />
+        <beans:property name="authenticationSuccessHandler" ref="myAuthenticationSuccessHandler" />
+        <beans:property name="authenticationFailureHandler" ref="myAuthenticationFailureHandler" />
+        <beans:property name="sessionAuthenticationStrategy" ref="mySessionAuthenticationStrategy" />
+        <beans:property name="rememberMeServices" ref="myRememberMeService" />
+    </beans:bean>
+
+	<beans:bean id="myRememberMeFilter" class="com.skyline.springsecurity.ajax.config.MyRememberMeFilter">
+		<beans:constructor-arg index="0" ref="myAuthenticationManager" />
+		<beans:constructor-arg index="1" ref="myRememberMeService" />
+	</beans:bean>
+
+	<authentication-manager alias="myAuthenticationManager">
+		<authentication-provider user-service-ref="myUserDetailsService">
+			<password-encoder ref="bcryptEncoder" />
+		</authentication-provider>
+		<authentication-provider ref="myRememberMeAuthenticationProvider"></authentication-provider>
+	</authentication-manager>
+
+	<beans:bean id="myRememberMeService" class="com.skyline.springsecurity.ajax.config.MyRememberMeService">
+		<beans:constructor-arg index="0" value="skyline" />
+		<beans:constructor-arg index="1" ref="myUserDetailsService" />
+		<beans:constructor-arg index="2" ref="myTokenRepository" />
+		<beans:property name="parameter" value="isRememberMe" />
+		<beans:property name="cookieName" value="rememberMe" />
+	</beans:bean>
+	
+	<beans:bean id="myTokenRepository" class="com.skyline.springsecurity.ajax.config.MyJdbcTokenRepositoryImpl" >
+		<beans:property name="dataSource" ref="dataSource" />
+	</beans:bean>
+
+	<beans:bean id="myRememberMeAuthenticationProvider" class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
+		<beans:constructor-arg index="0" value="skyline"/>
+	</beans:bean>
+
+	<beans:bean id="mySessionAuthenticationStrategy" class="org.springframework.security.web.authentication.session.CompositeSessionAuthenticationStrategy">
+		<beans:constructor-arg>
+			<beans:list>
+				<beans:bean	class="org.springframework.security.web.authentication.session.ConcurrentSessionControlAuthenticationStrategy">
+					<beans:constructor-arg ref="mySessionRegistryImpl" />
+					<beans:property name="maximumSessions" value="2" />
+					<beans:property name="exceptionIfMaximumExceeded" value="true" />
+				</beans:bean>
+				<beans:bean class="org.springframework.security.web.authentication.session.SessionFixationProtectionStrategy">
+				</beans:bean>
+				<beans:bean class="org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy">
+					<beans:constructor-arg ref="mySessionRegistryImpl" />
+				</beans:bean>
+			</beans:list>
+		</beans:constructor-arg>
+	</beans:bean>
+    
+    <beans:bean id="myRedirectStrategy" class="com.skyline.springsecurity.ajax.config.MyRedirectStrategy" />
+	<beans:bean id="myLogoutSuccessHandler" class="com.skyline.springsecurity.ajax.config.MyLogoutSuccessHandler" />
+    <beans:bean id="myAuthenticationSuccessHandler" class="com.skyline.springsecurity.ajax.config.MyAuthenticationSuccessHandler" />  
+    <beans:bean id="myAuthenticationFailureHandler" class="com.skyline.springsecurity.ajax.config.MyAuthenticationFailureHandler" />
+	<beans:bean id="myAuthEntryPoint" class="com.skyline.springsecurity.ajax.config.MyAuthEntryPoint" />
+    <beans:bean id="myUserDetailsService" class="com.skyline.springsecurity.ajax.config.MyUserDetails" /> 
+    <beans:bean id="myAccessDeniedHandler" class="com.skyline.springsecurity.ajax.config.MyAccessDeniedHandler" />
+	<beans:bean id="mySessionRegistryImpl" class="com.skyline.springsecurity.ajax.config.MySessionRegistryImpl" />
+	<beans:bean id="myAuthenticationSuccessProcesser" class="com.skyline.springsecurity.ajax.config.MyAuthenticationSuccessListener" />
+	<beans:bean id="myAuthenticationFailureProcesser" class="com.skyline.springsecurity.ajax.config.MyAuthenticationFailureListener" />
+	
+    <beans:bean id="bcryptEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+
+</beans:beans>  
