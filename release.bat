@@ -1,6 +1,6 @@
-set source_path=C:\Users\skyline\Desktop\code\node\goods_client\dist
-set run_path=C:\Users\skyline\Desktop\code\eclipse\.metadata\.plugins\org.eclipse.wst.server.core\tmp1\wtpwebapps\goods
-set code_path=C:\Users\skyline\Desktop\code\eclipse\goods\src\main\webapp
+set source_path=C:\Users\skyline\Desktop\code\node\demo\dist
+set run_path=C:\Users\skyline\Desktop\code\eclipse\.metadata\.plugins\org.eclipse.wst.server.core\tmp2\wtpwebapps\demo
+set code_path=C:\Users\skyline\Desktop\code\eclipse\demo\src\main\webapp
 
 rd %run_path%\resource /s /q
 rd %code_path%\resource /s /q
