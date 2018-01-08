@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-
 import com.skyline.model.ResponseModel;
 import com.skyline.util.HttpUtil;
 

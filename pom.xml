@@ -151,6 +151,13 @@
 			<artifactId>httpclient</artifactId>
 			<version>4.5.2</version>
 		</dependency>
+
+		<!-- util -->
+		<dependency>
+			<groupId>com.github.qskyline</groupId>
+			<artifactId>util</artifactId>
+			<version>0.0.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>

@@ -6,7 +6,6 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.InteractiveAuthenticationSuccessEvent;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.session.SessionInformation;
-
 import com.skyline.service.UserService;
 
 public class MyAuthenticationSuccessListener implements ApplicationListener<InteractiveAuthenticationSuccessEvent> {

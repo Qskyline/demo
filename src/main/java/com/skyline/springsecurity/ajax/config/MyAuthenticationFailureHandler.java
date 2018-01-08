@@ -9,7 +9,6 @@ import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
-
 import com.skyline.model.ResponseModel;
 import com.skyline.service.UserService;
 import com.skyline.util.HttpUtil;

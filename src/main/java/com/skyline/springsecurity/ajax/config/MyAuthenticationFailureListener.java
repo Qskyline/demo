@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;
 import org.springframework.security.core.Authentication;
-
 import com.skyline.service.UserService;
 
 public class MyAuthenticationFailureListener implements ApplicationListener<AuthenticationFailureBadCredentialsEvent> {
