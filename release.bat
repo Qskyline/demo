@@ -10,7 +10,6 @@ del %code_path%\WEB-INF\views\index.jsp
 xcopy %source_path%\resource %run_path%\resource /E /F /I /d
 xcopy %source_path%\resource %code_path%\resource /E /F /I /d
 
-type %source_path%\help.txt > %run_path%\WEB-INF\views\index.jsp
 type %source_path%\index.html >> %run_path%\WEB-INF\views\index.jsp
 echo f | xcopy %run_path%\WEB-INF\views\index.jsp %code_path%\WEB-INF\views\index.jsp /F /d
 
