@@ -1,4 +1,4 @@
-<template><b-col>
+<template>
 <b-navbar toggleable="md" type="light" variant="light" class="sticky-top navbar-expand-md">
   <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
   <b-navbar-brand href="#">Demo</b-navbar-brand>
@@ -25,7 +25,7 @@
     </b-navbar-nav>
   </b-collapse>
 </b-navbar>
-</b-col></template>
+</template>
 
 <script>
 export default {

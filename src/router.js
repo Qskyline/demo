@@ -2,6 +2,7 @@ import login from './views/login'
 import register from './views/register'
 import home from './views/home'
 import test from './views/test'
+import demo from './modules/demo'
 
 export default [
   {
@@ -17,7 +18,14 @@ export default [
   {
     path: '/home',
     name: 'home',
-    component: home
+    component: home,
+    children:[
+      {
+        path: '',
+        name: 'demo',
+        component: demo
+      }
+    ]
   },
   {
     path: '/test',

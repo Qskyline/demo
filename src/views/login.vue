@@ -61,7 +61,7 @@ export default {
       (response) => {
         switch(response.body.statusCode) {
           case _runStatus.STATUS_LOGGED:
-            this.$router.push({name: 'home'});
+            this.$router.push({path: '/home'});
             break;
           case _runStatus.STATUS_NOLOGGED:
           case _runStatus.STATUS_SESSION_TIMEOUT:
@@ -116,7 +116,7 @@ export default {
           (response) => {
             switch(response.body.statusCode) {
               case _loginStatus.LOGIN_SUCCESS:
-                router.push({name: 'home'});
+                router.push({path: '/home'});
                 break;
               case _loginStatus.LOGIN_USER_ALREADY_LOGGED:
                 this.state = 'info';
@@ -127,7 +127,7 @@ export default {
                     this.count --;
                     if(this.count == 0) {
                       clearInterval(tt);
-                      router.push({name: 'home'});
+                      router.push({path: '/home'});
                     }
                   }, 1000);
               case _loginStatus.LOGIN_AUTH_FAILED:

@@ -1,12 +1,9 @@
-<template><b-container fluid class="home" v-show="isShow">
-  <b-row no-gutters><navigator></navigator></b-row>
-  <b-row no-gutters><contentShow></contentShow></b-row>
-  <b-row no-gutters>{{fetch_data}}</b-row>
-</b-container></template>
+<template>
+  <homeTemplate :show="isShow"></homeTemplate>
+</template>
 
 <script>
-import navigator from '../modules/nav'
-import contentShow from '../modules/contentShow'
+import homeTemplate from '../modules/homeTemplate'
 export default {
   data() {
     return {
@@ -35,7 +32,7 @@ export default {
             this.isShow = true;
             setTimeout(function() {
                 router.push({name: 'login'})
-              }, 2000); 
+              }, 2000);
             break;
           case _runStatus.STATUS_ACCESS_DENY:
             //do something
@@ -50,14 +47,10 @@ export default {
     )
   },
   components: {
-    navigator,
-    contentShow
+    homeTemplate
   }
 }
 </script>
 
 <style>
-.home {
-  padding: 0;
-}
 </style>
