@@ -10,7 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import com.skyline.model.ResponseModel;
-import com.skyline.util.HttpUtil;
+import com.skyline.util.NetworkUtil;
 
 public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHandler {	
 	@Autowired
@@ -36,6 +36,6 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
 			}
 		}
 		
-		HttpUtil.writeToResponse(response, result);
+		NetworkUtil.writeToResponse(response, result);
 	}
 }

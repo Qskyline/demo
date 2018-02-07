@@ -11,7 +11,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
 import com.skyline.model.ResponseModel;
 import com.skyline.service.UserService;
-import com.skyline.util.HttpUtil;
+import com.skyline.util.NetworkUtil;
 
 public class MyAuthenticationFailureHandler implements AuthenticationFailureHandler {
 	@Autowired
@@ -28,6 +28,6 @@ public class MyAuthenticationFailureHandler implements AuthenticationFailureHand
 		} else if(paramAuthenticationException instanceof MyAuthenticationException) {
 			result = new ResponseModel(ResponseModel.Status.login_security_sqlInjection);
 		}
-        HttpUtil.writeToResponse(response, result);
+        NetworkUtil.writeToResponse(response, result);
 	}
 }

@@ -18,7 +18,7 @@ import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import com.skyline.model.ResponseModel;
-import com.skyline.util.HttpUtil;
+import com.skyline.util.NetworkUtil;
 
 public class MyUserKickFilter implements Filter {
 	@Autowired
@@ -45,7 +45,7 @@ public class MyUserKickFilter implements Filter {
 				for (LogoutHandler logoutHandler : handlers) {
 					logoutHandler.logout(request, response, auth);
 				}
-				HttpUtil.writeToResponse(response, new ResponseModel(ResponseModel.Status.status_session_single_user_restriction));
+				NetworkUtil.writeToResponse(response, new ResponseModel(ResponseModel.Status.status_session_single_user_restriction));
 				return ;
 			}
 		}
